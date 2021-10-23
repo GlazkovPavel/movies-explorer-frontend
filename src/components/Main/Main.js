@@ -6,11 +6,13 @@ import {Techs} from "../Techs/Techs";
 import {AboutMe} from "../AboutMe/AboutMe";
 import {Portfolio} from "../Portfolio/Portfolio";
 import {Footer} from "../Footer/Footer";
+import {Header} from "../Header/Header";
 
 
 export function Main(){
   return(
     <>
+      <Header />
       <Promo />
       <AboutProject />
       <Techs />
