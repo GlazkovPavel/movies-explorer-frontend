@@ -1,4 +1,5 @@
 import './AboutMe.css';
+import my_photo from '../../images/my_foto.jpg'
 
 export function AboutMe() {
   return (
@@ -9,7 +10,7 @@ export function AboutMe() {
           <h3 className="about-me__description-title">Павел</h3>
           <p className="about-me__description-subtitle">Фронтенд-разработчик, 31 год</p>
           <p className="about-me__description-paragraph">Я родился и живу в Ярославле.
-            Закочил МИИТ и 8 лет трудился в РЖД.
+            Закончил МИИТ и 8 лет трудился в РЖД.
             С 2021 года работаю в компании Solit-Clouds Тестировщиком ПО
             и в тоже время начал учиться на фронтенд разработчика.
             Хочу дальнейшую жизнь связать с разработкой.
@@ -19,7 +20,7 @@ export function AboutMe() {
             <a href="https://github.com/GlazkovPavel" target="_blank" rel="noreferrer" className="about-me__description-link">Github</a>
           </div>
         </div>
-        <img src={} alt="Юлия" className="about-me__description-photo"/>
+        <img src={my_photo}  alt="Павел" className="about-me__description-photo"/>
       </div>
     </section>
   )
