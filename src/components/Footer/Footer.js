@@ -11,10 +11,10 @@ export function Footer() {
             <a href="https://praktikum.yandex.ru/" target="_blank" rel="noreferrer" className="footer__link">Яндекс.Практикум</a>
           </li>
           <li className="footer__links-item">
-            <a href="https://github.com" target="_blank" rel="noreferrer" className="footer__link">Github</a>
+            <a href="https://github.com/GlazkovPavel" target="_blank" rel="noreferrer" className="footer__link">Github</a>
           </li>
           <li className="footer__links-item">
-            <a href="https://www.facebook.com" target="_blank" rel="noreferrer" className="footer__link">Facebook</a>
+            <a href="https://t.me/glazkov_pavel" target="_blank" rel="noreferrer" className="footer__link">Telegram</a>
           </li>
         </ul>
       </div>
