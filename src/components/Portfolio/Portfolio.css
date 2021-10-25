@@ -76,6 +76,6 @@
   .portfolio__link {
     font-size: 18px;
     line-height: 28px;
-    /*background: url('../../images/arrow__small.svg') right no-repeat;*/
+    background: url('../../images/arrow__small.svg') right no-repeat;
   }
 }
