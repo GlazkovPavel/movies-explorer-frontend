@@ -16,7 +16,7 @@ export function SearchForm() {
         </fieldset>
         <button type="submit" className="search__form-button" />
         <span className="search__form-button_border" />
-        <div className="search__toggle">
+        <div className="search__toggle-box">
           <FilterCheckbox />
           <h3 className="search__toggle-text">Короткометражки</h3>
         </div>
