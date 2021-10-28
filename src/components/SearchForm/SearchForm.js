@@ -1,5 +1,6 @@
 import './SearchForm.css';
 import search__icon from '../../images/search__icon.svg'
+import {FilterCheckbox} from "../FilterCheckbox/FilterCheckbox";
 
 export function SearchForm() {
   return(
@@ -16,6 +17,7 @@ export function SearchForm() {
         <button type="submit" className="search__form-button" />
         <span className="search__form-button_border" />
         <div className="search__toggle">
+          <FilterCheckbox />
           <h3 className="search__toggle-text">Короткометражки</h3>
         </div>
       </form>
