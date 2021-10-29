@@ -3,6 +3,7 @@ import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
+import {Profile} from "../Profile/Profile";
 
 
 function App() {
@@ -14,6 +15,9 @@ function App() {
         </Route>
         <Route path="/movies">
           <Movies />
+        </Route>
+        <Route path="/profile">
+          <Profile />
         </Route>
       </Switch>
 
