@@ -6,9 +6,14 @@ import { Footer } from "../Footer/Footer";
 import {MoviesCardList} from "../MoviesCardList/MoviesCardList";
 
 export function Movies() {
+
+  const mainState = false
+
   return(
     <>
-      <Header />
+      <Header
+      main={mainState}
+      />
       <SearchForm />
       <MoviesCardList />
       <Footer />

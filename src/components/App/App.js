@@ -8,10 +8,12 @@ import { Movies } from "../Movies/Movies";
 function App() {
   return (
     <div className="page">
-      <Movies />
       <Switch>
-        <Route exact path='/main'>
+        <Route exact path='/'>
           <Main />
+        </Route>
+        <Route path="/movies">
+          <Movies />
         </Route>
       </Switch>
 

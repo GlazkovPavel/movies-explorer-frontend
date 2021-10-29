@@ -3,7 +3,9 @@
   background-color: #DDDEE3;
   position: relative;
   padding: 18px 70px;
-
+}
+.header__white {
+  background-color: #FAFAFA;
 }
 .header__logo {
   margin-right: 44px;

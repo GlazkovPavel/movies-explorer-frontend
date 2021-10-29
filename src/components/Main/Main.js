@@ -10,9 +10,14 @@ import {Header} from "../Header/Header";
 
 
 export function Main(){
+
+  const mainState = true
+
   return(
     <>
-      <Header />
+      <Header
+      main={mainState}
+      />
       <Promo />
       <AboutProject />
       <Techs />
