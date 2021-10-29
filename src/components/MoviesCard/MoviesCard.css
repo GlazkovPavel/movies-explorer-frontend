@@ -69,3 +69,14 @@
   margin: 0;
   padding: 17px 0 16px 16px;
 }
+
+@media(max-width: 520px) {
+  .movies__item{
+    max-width: 100%;
+  }
+  .movies__photo-container{
+    max-width: 100%;
+    height: 203px;
+
+  }
+}
