@@ -7,6 +7,7 @@ import { Profile } from "../Profile/Profile";
 import { Register } from "../Register/Register";
 import { Login } from "../Login/Login";
 import { NotFound } from "../NotFound/NotFound";
+import {SavedMovies} from "../SavedMovies/SavedMovies";
 
 
 function App() {
@@ -27,6 +28,9 @@ function App() {
         </Route>
         <Route path="/profile">
           <Profile />
+        </Route>
+        <Route path="/saved-movies">
+          <SavedMovies />
         </Route>
         <Route path="*">
           <NotFound />

@@ -40,26 +40,25 @@
   padding-left: 16px;
 }
 
-.movies__item-like-button {
-  background: url('../../images/like__inactive.svg') center no-repeat;
+.movies__item-button {
   border: 1px solid transparent;
   width: 30px;
   height: 30px;
-  border-radius: 50%;
   outline: none;
   padding: 0;
   margin-right: 16px;
-  transition: background-color 0.3s;
-
+  background: #FFFFFF;
 
 }
-
-.movies__item-like-button:hover {
+.movies__item-button:hover {
   cursor: pointer;
-  background-color: #F5F5F5;
 }
-
-
+.movies__item-like-button{
+  background: url('../../images/like__inactive.svg') center no-repeat;
+}
+.movies__item-delete-button:hover{
+  background: url('../../images/delete__icon.svg') center no-repeat;
+}
 .movies__item-duration {
   font-style: normal;
   font-weight: normal;

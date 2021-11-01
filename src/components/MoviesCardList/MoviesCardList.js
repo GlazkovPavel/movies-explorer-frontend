@@ -3,7 +3,8 @@ import "./MoviesCardList.css";
 import {MoviesCard} from "../MoviesCard/MoviesCard";
 import {initialCards} from "../../utils/bd"
 
-export function MoviesCardList(){
+export function MoviesCardList(props){
+
   return(
     <section className="movies">
       <ul className="movies__grid">
@@ -11,6 +12,7 @@ export function MoviesCardList(){
           <MoviesCard
             key={card._id}
             card={card}
+            saved={props.saved}
           />
 
         ))}

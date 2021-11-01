@@ -8,6 +8,7 @@ import {MoviesCardList} from "../MoviesCardList/MoviesCardList";
 export function Movies() {
 
   const mainState = false
+  const saved = false
 
   return(
     <>
@@ -15,7 +16,7 @@ export function Movies() {
       main={mainState}
       />
       <SearchForm />
-      <MoviesCardList />
+      <MoviesCardList saved={saved}/>
       <Footer />
     </>
 
