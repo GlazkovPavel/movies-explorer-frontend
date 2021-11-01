@@ -3,8 +3,9 @@ import { Route, Switch } from 'react-router-dom';
 import './App.css';
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
-import {Profile} from "../Profile/Profile";
-import {Register} from "../Register/Register";
+import { Profile } from "../Profile/Profile";
+import { Register } from "../Register/Register";
+import { Login } from "../Login/Login";
 
 
 function App() {
@@ -13,6 +14,9 @@ function App() {
       <Switch>
         <Route exact path='/signup'>
           <Register />
+        </Route>
+        <Route exact path='/signin'>
+          <Login />
         </Route>
         <Route exact path='/'>
           <Main />
