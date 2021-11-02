@@ -14,6 +14,7 @@
 .movies__photo {
   width: 100%;
   height: 100%;
+  object-fit: cover;
   transition: opacity 0.3s ease-in-out;
   border-top-right-radius: 10px;
   border-top-left-radius: 10px;
@@ -56,7 +57,10 @@
 .movies__item-like-button{
   background: url('../../images/like__inactive.svg') center no-repeat;
 }
-.movies__item-delete-button:hover{
+.movies__item-like-button-active{
+  background: url('../../images/like__active.svg') center no-repeat;
+}
+.movies__item-delete-button{
   background: url('../../images/delete__icon.svg') center no-repeat;
 }
 .movies__item-duration {
@@ -69,7 +73,7 @@
   padding: 17px 0 16px 16px;
 }
 
-@media(max-width: 520px) {
+@media(max-width: 640px) {
   .movies__item{
     max-width: 100%;
   }

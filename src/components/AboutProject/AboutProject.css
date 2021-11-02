@@ -115,3 +115,11 @@
     margin-bottom: 60px;
   }
 }
+
+@media(max-width: 400px) {
+  .about-project__info-text {
+    font-size: 11px;
+    line-height: 16px;
+  }
+}
+

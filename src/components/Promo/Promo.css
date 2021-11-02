@@ -128,5 +128,8 @@
   .promo__image {
     width: 280px;
   }
+  .promo__button {
+    margin: 80px auto 30px;
+  }
 }
 

@@ -136,3 +136,10 @@
     line-height: 28px;
   }
 }
+
+
+@media(max-width: 720px) {
+  .about-me {
+    padding-bottom: 0;
+  }
+}
