@@ -9,11 +9,13 @@ export function Movies() {
 
   const mainState = false
   const saved = false
+  const loggedIn = true
 
   return(
     <>
       <Header
       main={mainState}
+      loggedIn={loggedIn}
       />
       <SearchForm />
       <MoviesCardList saved={saved}/>

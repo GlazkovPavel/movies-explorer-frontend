@@ -12,11 +12,14 @@ import {Header} from "../Header/Header";
 export function Main(){
 
   const mainState = true
+  const loggedIn = false
+
 
   return(
     <>
       <Header
       main={mainState}
+      loggedIn={loggedIn}
       />
       <Promo />
       <AboutProject />

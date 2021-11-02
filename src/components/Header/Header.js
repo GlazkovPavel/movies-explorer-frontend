@@ -6,7 +6,6 @@ import {Navigation} from "../Navigation/Navigation";
 
 export function Header(props){
 
-  const loggedIn = true
 
   return(
 
@@ -14,7 +13,7 @@ export function Header(props){
         <Link to="/">
           <img src={header__logo} className="header__logo" alt="Лого"/>
         </Link>
-        <Navigation loggedIn={loggedIn}/>
+        <Navigation loggedIn={props.loggedIn}/>
 
       </section>
 
