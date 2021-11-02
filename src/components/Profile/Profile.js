@@ -6,10 +6,12 @@ export function Profile() {
 
   const name = 'Павел'
   const email = 'email@mail.ru'
+  const loggedIn = true
+
 
   return(
     <>
-      <Header />
+      <Header loggedIn={loggedIn}/>
       <section className="profile">
         <h2 className='profile__title'>Привет, {name}!</h2>
         <form className="profile__form">
