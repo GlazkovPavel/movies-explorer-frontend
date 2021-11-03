@@ -9,32 +9,51 @@ import { Login } from "../Login/Login";
 import { NotFound } from "../NotFound/NotFound";
 import { SavedMovies } from "../SavedMovies/SavedMovies";
 import {ProtectedRoute} from "../ProtectedRoute/ProtectedRoute";
+import { getMovies } from "../../utils/MoviesApi";
+import api from "../../utils/MainApi";
+
 
 function App() {
+  const [allMovies, setAllMovies] = React.useState([]);
+
+  const isLoggedIn = true
+
+  const getMoviesList = () => {
+    getMovies()
+      .then((movies) => {
+        setAllMovies(movies)
+        console.log(movies)
+      })
+  }
+
   return (
     <div className="page">
       <Switch>
         <Route exact path='/'>
           <Main />
         </Route>
-        <ProtectedRoute exact path="/movies" loggedIn={isLoggedIn} component={Movies} />
-        <ProtectedRoute exact path="/saved-movies"  loggedIn={isLoggedIn} component={SavedMovies} />
-        <ProtectedRoute exact path="/profile" loggedIn={isLoggedIn} component={Profile} />
+        <ProtectedRoute
+          exact path="/movies"
+          loggedIn={isLoggedIn}
+          component={Movies}
+          allMovies={allMovies}
+          onSearchMovies={getMoviesList}
+        />
+        <ProtectedRoute
+          exact path="/saved-movies"
+          loggedIn={isLoggedIn}
+          component={SavedMovies}
+        />
+        <ProtectedRoute
+          exact path="/profile"
+          loggedIn={isLoggedIn}
+          component={Profile}
+        />
         <Route exact path='/signup'>
           <Register />
         </Route>
         <Route exact path='/signin'>
           <Login />
-        </Route>
-
-        <Route path="/movies">
-          <Movies />
-        </Route>
-        <Route path="/profile">
-          <Profile />
-        </Route>
-        <Route path="/saved-movies">
-          <SavedMovies />
         </Route>
         <Route path="*">
           <NotFound />

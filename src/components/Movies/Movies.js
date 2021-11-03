@@ -21,7 +21,11 @@ export function Movies(props) {
         onSearchMovies={props.onSearchMovies}
         saved={saved}
       />
-      <MoviesCardList saved={saved}/>
+      <MoviesCardList
+        saved={saved}
+        movies={props.allMovies}
+
+      />
       <Footer />
     </>
 
