@@ -9,7 +9,6 @@ import { Login } from "../Login/Login";
 import { NotFound } from "../NotFound/NotFound";
 import {SavedMovies} from "../SavedMovies/SavedMovies";
 
-
 function App() {
   return (
     <div className="page">
@@ -39,5 +38,4 @@ function App() {
     </div>
   );
 }
-
 export default App;
