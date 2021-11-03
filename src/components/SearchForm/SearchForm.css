@@ -37,7 +37,9 @@
   width: 746px;
   height: 100%;
   border-style: none;
-  outline: none;
+}
+.search__form-input:focus {
+  outline-color: #3456F3;
 }
 
 .search__form-input::placeholder {

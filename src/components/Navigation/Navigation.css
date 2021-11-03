@@ -34,6 +34,7 @@
   color: #FFFFFF;
   background-color: #3456F3;
   padding: 8px 20px;
+  border-radius: 3px;
   transition: opacity 0.3s ease-in-out;
 }
 
@@ -63,9 +64,10 @@
   display: flex;
   align-items: center;
   text-align: center;
-  padding: 8px 20px;
   color: #000000;
-  background: #F4F4F4;
+  background: url("../../images/icon_button.svg") 12px no-repeat;
+  border: 2px solid #AAAAAA;
+  padding:  8px 12px 8px 31px;
   border-radius: 20px;
   transition: opacity 0.3s ease-in-out;
 }
@@ -146,14 +148,14 @@
 }
 
 .header__burger-menu-link_type_account {
-  margin: 621px 0 0 0;
+  margin: 422px 0 0 0;
   font-weight: 500;
   font-size: 14px;
   line-height: 16px;
-  background: #F4F4F4;
-  padding: 8px 20px;
+  background: url("../../images/icon_button.svg") 12px no-repeat;
+  border: 2px solid #AAAAAA;
+  padding:  8px 12px 8px 31px;
   border-radius: 20px;
-  border: none;
   transition: opacity 0.3s ease-in-out;
 }
 
