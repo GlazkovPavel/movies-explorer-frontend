@@ -24,6 +24,8 @@ export function Movies(props) {
       <MoviesCardList
         saved={saved}
         movies={props.allMovies}
+        onMovieSave={props.onMovieSave}
+        onDeleteMovie={props.onDeleteMovie}
 
       />
       <Footer />

@@ -56,6 +56,8 @@ export function MoviesCardList(props){
             key={movie.id}
             movie={movie}
             saved={props.saved}
+            onMovieSave={props.onMovieSave}
+            onDeleteMovie={props.onDeleteMovie}
           />
 
         ))}

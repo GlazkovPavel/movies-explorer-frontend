@@ -5,7 +5,7 @@ import {SearchForm} from "../SearchForm/SearchForm";
 import {MoviesCardList} from "../MoviesCardList/MoviesCardList";
 import {Footer} from "../Footer/Footer";
 
-export function SavedMovies(){
+export function SavedMovies(props){
 
   const mainState = false
   const saved = true
@@ -17,8 +17,15 @@ export function SavedMovies(){
         main={mainState}
         loggedIn={loggedIn}
       />
-      <SearchForm />
-      <MoviesCardList saved={saved}/>
+      <SearchForm
+        onSearchSavedMovies={props.onSearchSavedMovies}
+        saved={saved}
+      />
+      <MoviesCardList
+        saved={saved}
+        movies={props.movies}
+        onDeleteMovie={props.onDeleteMovie}
+      />
       <Footer />
     </>
   )

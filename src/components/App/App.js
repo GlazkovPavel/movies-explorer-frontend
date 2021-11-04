@@ -15,15 +15,50 @@ import api from "../../utils/MainApi";
 
 function App() {
   const [allMovies, setAllMovies] = React.useState([]);
+  const [savedMovies, setSavedMovies] = React.useState([]);
+
 
   const isLoggedIn = true
+
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgxODE1OTA0ZjVlM2U0MzlmMDRjMzMiLCJpYXQiOjE2MzU4NzcyMjMsImV4cCI6MTYzNjQ4MjAyM30.wu7XJQPVIS6IaUoimeiCQen3AYhdfzAslmk1LR9nuSE'
 
   const getMoviesList = () => {
     getMovies()
       .then((movies) => {
         setAllMovies(movies)
         console.log(movies)
+        localStorage.setItem('movies', JSON.stringify(movies))
       })
+  }
+
+  function handleSaveMovie(movie) {
+    api.saveMovie(token, movie)
+      .then((savedMovie) => {
+        const films = [...savedMovies, savedMovie];
+        localStorage.setItem('savedMovies', JSON.stringify(films));
+        setSavedMovies(prevState => ([...prevState, savedMovie]));
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}, попробуйте еще раз`);
+      })
+  }
+
+  function handleDeleteMovie(movieId) {
+
+    api.deleteMovie(token, movieId)
+      .then(() => {
+        const newSavedMovies = savedMovies.filter((deletedMovie) => {return deletedMovie._id !== movieId})
+        setSavedMovies(newSavedMovies);
+        localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
+      })
+      .catch((err) => {
+        console.log(`Ошибка ${err}, попробуйте еще раз`);
+      })
+  }
+  function searchSavedMovies() {
+    const allSavedMovies = JSON.parse(localStorage.getItem('savedMovies'));
+    //const searchSavedResult = handleSearchMovies(allSavedMovies, keyWord);
+    setSavedMovies(allSavedMovies);
   }
 
   return (
@@ -38,11 +73,17 @@ function App() {
           component={Movies}
           allMovies={allMovies}
           onSearchMovies={getMoviesList}
+          onDeleteMovie={handleDeleteMovie}
+          onMovieSave={handleSaveMovie}
         />
         <ProtectedRoute
           exact path="/saved-movies"
           loggedIn={isLoggedIn}
           component={SavedMovies}
+          movies={savedMovies}
+          onDeleteMovie={handleDeleteMovie}
+          onSearchSavedMovies={searchSavedMovies}
+
         />
         <ProtectedRoute
           exact path="/profile"
