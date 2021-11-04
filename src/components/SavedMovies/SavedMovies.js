@@ -25,6 +25,7 @@ export function SavedMovies(props){
         saved={saved}
         movies={props.movies}
         onDeleteMovie={props.onDeleteMovie}
+        notFoundMovies={props.notFoundMovies}
       />
       <Footer />
     </>

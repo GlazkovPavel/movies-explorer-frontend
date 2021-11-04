@@ -13,7 +13,6 @@ export function SearchForm(props) {
 
   function handleSearchMovies(e) {
     e.preventDefault();
-
     props.onSearchMovies(search);
   }
 

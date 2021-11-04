@@ -16,6 +16,7 @@ import api from "../../utils/MainApi";
 function App() {
   const [allMovies, setAllMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
+  const [notFoundMovies, setNotFoundMovies] = React.useState(false);
 
   const location = useLocation();
 
@@ -56,10 +57,26 @@ function App() {
         console.log(`Ошибка ${err}, попробуйте еще раз`);
       })
   }
-  function searchSavedMovies() {
+
+  function handleSearchMovies(movies, word) {
+    let filteredMovies = [];
+
+    movies.forEach((movie) => {
+      if(movie.nameRU.indexOf(word) > -1) {
+
+        return filteredMovies.push(movie);
+      }
+    })
+
+    return filteredMovies;
+  }
+  function searchSavedMovies(word) {
     const allSavedMovies = JSON.parse(localStorage.getItem('savedMovies'));
-    //const searchSavedResult = handleSearchMovies(allSavedMovies, keyWord);
-    setSavedMovies(allSavedMovies);
+    const searchSavedResult = handleSearchMovies(allSavedMovies, word);
+    if (searchSavedResult.length === 0) {
+      setNotFoundMovies(true)
+    }
+    setSavedMovies(searchSavedResult);
   }
 
   React.useEffect(() => {
@@ -73,7 +90,8 @@ function App() {
 
   React.useEffect(() => {
     const movies = JSON.parse(localStorage.getItem('movies'))
-    setAllMovies(movies)
+
+      setAllMovies(movies)
   }, []);
 
 
@@ -91,6 +109,7 @@ function App() {
           onSearchMovies={getMoviesList}
           onDeleteMovie={handleDeleteMovie}
           onMovieSave={handleSaveMovie}
+          notFoundMovies={notFoundMovies}
         />
         <ProtectedRoute
           exact path="/saved-movies"
@@ -99,6 +118,7 @@ function App() {
           movies={savedMovies}
           onDeleteMovie={handleDeleteMovie}
           onSearchSavedMovies={searchSavedMovies}
+          notFoundMovies={notFoundMovies}
 
         />
         <ProtectedRoute

@@ -20,7 +20,7 @@ export function MoviesCardList(props){
       return 12
     }
   } );
-  const [moreCardsNumber, setMoreCardsNumber] = React.useState(() => {
+  const [moreCards] = React.useState(() => {
     const windowSize = window.innerWidth;
      if(windowSize <= 970) {
       return 2
@@ -42,18 +42,20 @@ export function MoviesCardList(props){
     }
   }
 
-  const displayedMovies = props.movies?.slice(0, initialCardsCurrent);
+  const displayMovies = props.movies?.slice(0, initialCardsCurrent);
 
   function handleMoviesIncrease() {
-    setInitialCardsCurrent(prevState => {return prevState + moreCardsNumber});
+    setInitialCardsCurrent(prevState => {return prevState + moreCards});
   }
 
   return(
     <section className="movies">
+      {props.notFoundMovies && <span>Ничего не найдено</span>}
+
       <ul className="movies__grid">
-        {displayedMovies?.map(movie => (
+        {displayMovies?.map(movie => (
           <MoviesCard
-            key={movie.id}
+            key={props.saved ? movie._id : movie.id}
             movie={movie}
             saved={props.saved}
             onMovieSave={props.onMovieSave}
@@ -63,7 +65,7 @@ export function MoviesCardList(props){
         ))}
       </ul>
       <button className={props.saved ? 'movies__button-more movies__button-more_invisible' :
-        `movies__button-more ${props.movies?.length === displayedMovies?.length ? 'movies__button-more_invisible' : ''}`}
+        `movies__button-more ${props.movies?.length === displayMovies?.length ? 'movies__button-more_invisible' : ''}`}
               onClick={handleMoviesIncrease} >Еще</button>
     </section>
   )

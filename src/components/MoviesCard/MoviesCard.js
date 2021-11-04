@@ -63,7 +63,10 @@ export function MoviesCard(props) {
   return(
     <li className="movies__item" >
       <div className="movies__photo-container" >
-        <a href={props.saved ? props.movie.trailer : props.movie.trailerLink} className="movies__trailer-link">
+        <a href={props.saved ? props.movie.trailer : props.movie.trailerLink}
+           className="movies__trailer-link"
+           rel="noreferrer"
+           target="_blank">
           <img className="movies__photo" alt={props.movie.nameRU} src={props.saved ? props.movie.image : image}/>
         </a>
       </div>
