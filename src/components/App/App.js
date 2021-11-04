@@ -27,8 +27,8 @@ function App() {
     getMovies()
       .then((movies) => {
         setAllMovies(movies)
-        console.log(movies)
         localStorage.setItem('movies', JSON.stringify(movies))
+        console.log(localStorage.getItem('movies'))
       })
   }
 
@@ -64,12 +64,17 @@ function App() {
 
   React.useEffect(() => {
 
-
     api.getSavedMovies(token)
       .then((res) => {
         setSavedMovies(res);
       })
   }, [location]);
+
+
+  React.useEffect(() => {
+    const movies = JSON.parse(localStorage.getItem('movies'))
+    setAllMovies(movies)
+  }, []);
 
 
   return (
