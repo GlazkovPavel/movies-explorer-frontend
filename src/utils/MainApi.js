@@ -1,6 +1,6 @@
 class MainApi {
   constructor() {
-    this._url = 'https://api.super-movies-explorer.nomoredomains.monster'
+    this._url = 'http://localhost:3002'
   }
   _getResponse(res) {
     if (res.ok) {
@@ -71,7 +71,6 @@ class MainApi {
     return fetch(`${this._url}/movies`, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },

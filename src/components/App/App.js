@@ -1,5 +1,5 @@
 import React from "react";
-import { Route, Switch } from 'react-router-dom';
+import {Route, Switch, useLocation} from 'react-router-dom';
 import './App.css';
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
@@ -17,10 +17,11 @@ function App() {
   const [allMovies, setAllMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
 
+  const location = useLocation();
 
   const isLoggedIn = true
 
-  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgxODE1OTA0ZjVlM2U0MzlmMDRjMzMiLCJpYXQiOjE2MzU4NzcyMjMsImV4cCI6MTYzNjQ4MjAyM30.wu7XJQPVIS6IaUoimeiCQen3AYhdfzAslmk1LR9nuSE'
+  const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgzZTA2YmU4Nzc3MGE5NjRiMjEyZTAiLCJpYXQiOjE2MzYwMzI2MzIsImV4cCI6MTYzNjYzNzQzMn0.OS-cZayElckT6exOSsHvJYFD1J7lppYBBX1FKXTFA90'
 
   const getMoviesList = () => {
     getMovies()
@@ -60,6 +61,16 @@ function App() {
     //const searchSavedResult = handleSearchMovies(allSavedMovies, keyWord);
     setSavedMovies(allSavedMovies);
   }
+
+  React.useEffect(() => {
+
+
+    api.getSavedMovies(token)
+      .then((res) => {
+        setSavedMovies(res);
+      })
+  }, [location]);
+
 
   return (
     <div className="page">

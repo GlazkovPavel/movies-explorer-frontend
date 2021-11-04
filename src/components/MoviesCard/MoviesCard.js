@@ -25,7 +25,7 @@ export function MoviesCard(props) {
   const image = `https://api.nomoreparties.co${props.movie.image?.url}`;
   const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
   console.log(savedMovies)
-  const currentMovie = savedMovies.find((movie) => movie.nameRU === props.movie.nameRU);
+  //const currentMovie = savedMovies.find((movie) => movie.nameRU === props.movie.nameRU);
 
   const location = useLocation();
 
@@ -36,21 +36,21 @@ export function MoviesCard(props) {
 
   function handleDisLike() {
     setIsLiked(false);
-    console.log(currentMovie)
-    props.onDeleteMovie(currentMovie._id);
+    // console.log(currentMovie)
+    // props.onDeleteMovie(currentMovie._id);
   }
 
   function handleDeleteMovie() {
     props.onDeleteMovie(props.movie._id);
     setIsLiked(false);
   }
-
-  React.useEffect(() => {
-    if(currentMovie) {
-      setIsLiked(true)
-    }
-
-  }, [currentMovie, location])
+  //
+  // React.useEffect(() => {
+  //   if(currentMovie) {
+  //     setIsLiked(true)
+  //   }
+  //
+  // }, [currentMovie, location])
 
   function onMouseOver(){
     setIsMoviesSaved(true)
