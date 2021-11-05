@@ -17,6 +17,8 @@ function App() {
   const [allMovies, setAllMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [notFoundMovies, setNotFoundMovies] = React.useState(false);
+  const [movies, setMovies] = React.useState([]);
+
 
   const location = useLocation();
 
@@ -24,13 +26,31 @@ function App() {
 
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgzZTA2YmU4Nzc3MGE5NjRiMjEyZTAiLCJpYXQiOjE2MzYwMzI2MzIsImV4cCI6MTYzNjYzNzQzMn0.OS-cZayElckT6exOSsHvJYFD1J7lppYBBX1FKXTFA90'
 
-  const getMoviesList = () => {
-    getMovies()
-      .then((movies) => {
-        setAllMovies(movies)
-        localStorage.setItem('movies', JSON.stringify(movies))
-        console.log(localStorage.getItem('movies'))
-      })
+  const searchMovies = (word) => {
+
+      if(allMovies.length === 0) {
+        getMovies()
+          .then((movies) => {
+              setAllMovies(movies)
+              const searchResult = handleSearchMovies(movies, word)
+              if(searchResult.length === 0) {
+                setNotFoundMovies(true);
+                setAllMovies([]);
+              } else {
+                localStorage.setItem('movies', JSON.stringify(movies))
+                setMovies(JSON.parse(localStorage.getItem('movies')));
+              }})
+          .catch(err => console.log(err, 'Обработка ошибок'))
+      } else {
+        const searchResult = handleSearchMovies(allMovies, word)
+        if(searchResult.length === 0) {
+          setNotFoundMovies(true);
+          setMovies([]);
+        } else if(searchResult.length !== 0) {
+          localStorage.setItem('movies', JSON.stringify(searchResult));
+          setMovies(JSON.parse(localStorage.getItem('movies')));
+        }
+      }
   }
 
   function handleSaveMovie(movie) {
@@ -44,7 +64,7 @@ function App() {
         console.log(`Ошибка ${err}, попробуйте еще раз`);
       })
   }
-
+//функция удаления фильмов в сохраненных
   function handleDeleteMovie(movieId) {
 
     api.deleteMovie(token, movieId)
@@ -57,19 +77,19 @@ function App() {
         console.log(`Ошибка ${err}, попробуйте еще раз`);
       })
   }
+//фильтр названия фильмов
+  const handleSearchMovies = (movies, word, short) => {
+    const filterRegex = new RegExp(word, 'gi');
 
-  function handleSearchMovies(movies, word) {
-    let filteredMovies = [];
-
-    movies.forEach((movie) => {
-      if(movie.nameRU.indexOf(word) > -1) {
-
-        return filteredMovies.push(movie);
+    return movies.filter((movie) => {
+      if (short) {
+        return movie.duration <= 40 && filterRegex.test(movie.nameRU)
+      } else {
+        return filterRegex.test(movie.nameRU)
       }
     })
-
-    return filteredMovies;
   }
+//поиск по сохраненным фильтрам
   function searchSavedMovies(word) {
     const allSavedMovies = JSON.parse(localStorage.getItem('savedMovies'));
     const searchSavedResult = handleSearchMovies(allSavedMovies, word);
@@ -91,7 +111,7 @@ function App() {
   React.useEffect(() => {
     const movies = JSON.parse(localStorage.getItem('movies'))
 
-      setAllMovies(movies)
+      setMovies(movies)
   }, []);
 
 
@@ -105,8 +125,8 @@ function App() {
           exact path="/movies"
           loggedIn={isLoggedIn}
           component={Movies}
-          allMovies={allMovies}
-          onSearchMovies={getMoviesList}
+          movies={movies}
+          onSearchMovies={searchMovies}
           onDeleteMovie={handleDeleteMovie}
           onMovieSave={handleSaveMovie}
           notFoundMovies={notFoundMovies}

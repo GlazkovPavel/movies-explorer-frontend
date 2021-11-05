@@ -23,7 +23,7 @@ export function Movies(props) {
       />
       <MoviesCardList
         saved={saved}
-        movies={props.allMovies}
+        movies={props.movies}
         onMovieSave={props.onMovieSave}
         onDeleteMovie={props.onDeleteMovie}
         notFoundMovies={props.notFoundMovies}
