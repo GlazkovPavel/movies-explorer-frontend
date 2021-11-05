@@ -6,6 +6,7 @@ import {FilterCheckbox} from "../FilterCheckbox/FilterCheckbox";
 export function SearchForm(props) {
 
   const [search, setSearch] = React.useState('')
+  const [isChecked, setIsShortMoviesChecked] = React.useState(false);
 
   function handleSearchChange(e){
     setSearch(e.target.value);
@@ -13,13 +14,16 @@ export function SearchForm(props) {
 
   function handleSearchMovies(e) {
     e.preventDefault();
-    props.onSearchMovies(search);
+    props.onSearchMovies(search, isChecked);
   }
 
   function handleSearchSavedMovies(e) {
     e.preventDefault();
+    props.onSearchSavedMovies(search, isChecked);
+  }
 
-    props.onSearchSavedMovies(search);
+  function handleShortMoviesCheck(e) {
+    setIsShortMoviesChecked(e.target.checked);
   }
 
   return(
@@ -37,7 +41,7 @@ export function SearchForm(props) {
         <button type="submit" className="search__form-button" />
         <span className="search__form-button_border" />
         <div className="search__toggle-box">
-          <FilterCheckbox />
+          <FilterCheckbox onChange={handleShortMoviesCheck} isChecked={isChecked}/>
           <h3 className="search__toggle-text">Короткометражки</h3>
         </div>
       </form>

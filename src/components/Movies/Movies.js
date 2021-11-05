@@ -28,8 +28,6 @@ export function Movies(props) {
         onDeleteMovie={props.onDeleteMovie}
         notFoundMovies={props.notFoundMovies}
         isLoading={props.isLoading}
-
-
       />
       <Footer />
     </>

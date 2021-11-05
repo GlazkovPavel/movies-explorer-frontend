@@ -22,13 +22,13 @@ function App() {
 
 
   const location = useLocation();
-  const history = useHistory();
+  //const history = useHistory();
 
   const isLoggedIn = true
 
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgzZTA2YmU4Nzc3MGE5NjRiMjEyZTAiLCJpYXQiOjE2MzYwMzI2MzIsImV4cCI6MTYzNjYzNzQzMn0.OS-cZayElckT6exOSsHvJYFD1J7lppYBBX1FKXTFA90'
 
-  const searchMovies = (word) => {
+  const searchMovies = (word, isChecked) => {
     setIsLoading(true);
     setMovies([]);
     setNotFoundMovies(false);
@@ -37,24 +37,27 @@ function App() {
         getMovies()
           .then((movies) => {
               setAllMovies(movies)
-              const searchResult = handleSearchMovies(movies, word)
+              const searchResult = handleSearchMovies(movies, word, isChecked)
               if(searchResult.length === 0) {
                 setNotFoundMovies(true);
                 setMovies([]);
+                setIsLoading(false);
               } else {
                 localStorage.setItem('movies', JSON.stringify(movies))
                 setMovies(JSON.parse(localStorage.getItem('movies')));
                 setNotFoundMovies(false);
+                setIsLoading(false);
               }})
           .catch(err => console.log(err, 'Обработка ошибок'))
           .finally(() => {
             setIsLoading(false);
           })
       } else {
-        const searchResult = handleSearchMovies(allMovies, word)
+        const searchResult = handleSearchMovies(allMovies, word, isChecked)
         if(searchResult.length === 0) {
           setNotFoundMovies(true);
           setMovies([]);
+          setIsLoading(false);
         } else if(searchResult.length !== 0) {
           localStorage.setItem('movies', JSON.stringify(searchResult));
           setMovies(JSON.parse(localStorage.getItem('movies')));
@@ -91,26 +94,30 @@ function App() {
         console.log(`Ошибка ${err}, попробуйте еще раз`);
       })
   }
-//фильтр названия фильмов
-  const handleSearchMovies = (movies, word, short) => {
-    const filterRegex = new RegExp(word, 'gi');
 
+//фильтр названия фильмов
+  const handleSearchMovies = (movies, word, isChecked) => {
+
+    const filterRegex = new RegExp(word, 'gi');
     return movies.filter((movie) => {
-      if (short) {
+      if (isChecked) {
         return movie.duration <= 40 && filterRegex.test(movie.nameRU)
       } else {
         return filterRegex.test(movie.nameRU)
       }
     })
   }
+
 //поиск по сохраненным фильтрам
-  function searchSavedMovies(word) {
+  function searchSavedMovies(word, isChecked) {
     const allSavedMovies = JSON.parse(localStorage.getItem('savedMovies'));
-    const searchSavedResult = handleSearchMovies(allSavedMovies, word);
+    const searchSavedResult = handleSearchMovies(allSavedMovies, word, isChecked);
     if (searchSavedResult.length === 0) {
       setNotFoundMovies(true)
+      setIsLoading(false);
     }
     setSavedMovies(searchSavedResult);
+    setIsLoading(false);
   }
 
   React.useEffect(() => {
@@ -127,9 +134,6 @@ function App() {
 
       setMovies(movies)
     }, [] );
-
-
-
 
   return (
     <div className="page">
@@ -156,7 +160,6 @@ function App() {
           onDeleteMovie={handleDeleteMovie}
           onSearchSavedMovies={searchSavedMovies}
           notFoundMovies={notFoundMovies}
-
         />
         <ProtectedRoute
           exact path="/profile"
