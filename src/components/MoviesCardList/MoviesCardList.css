@@ -1,0 +1,125 @@
+.movies {
+  padding: 70px 70px 80px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.movies__grid {
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(3, 364px);
+  grid-column-gap: 24px;
+  grid-row-gap: 37px;
+}
+
+@media(max-width: 1200px) {
+  .movies__grid {
+    grid-template-columns: repeat(3, 310px);
+  }
+}
+@media(max-width: 1150px) {
+  .movies__grid {
+    grid-template-columns: repeat(3, 300px);
+  }
+}
+
+@media(max-width: 1050px) {
+  .movies__grid {
+    grid-template-columns: repeat(3, 296px);
+  }
+}
+
+@media(max-width: 970px) {
+  .movies {
+    padding: 70px 30px 80px;
+  }
+
+  .movies__grid {
+    grid-template-columns: repeat(2, 370px);
+    grid-column-gap: 30px;
+    grid-row-gap: 30px;
+  }
+}
+@media(max-width: 850px) {
+
+  .movies__grid {
+    grid-template-columns: repeat(2, 350px);
+  }
+}
+
+@media(max-width: 769px) {
+  .movies {
+    padding: 70px 30px 80px;
+  }
+
+  .movies__grid {
+    grid-template-columns: repeat(2, 339px);
+
+  }
+}
+
+@media(max-width: 750px) {
+
+  .movies__grid {
+    grid-template-columns: repeat(2, 309px);
+  }
+}
+@media(max-width: 690px) {
+
+  .movies__grid {
+    grid-row-gap: 8px;
+    grid-column-gap: 8px;
+  }
+}
+@media(max-width: 640px) {
+  .movies {
+    padding: 40px 10px 80px;
+  }
+
+  .movies__grid {
+    grid-template-columns: repeat(1, 560px);
+    grid-column-gap: 0;
+    grid-row-gap: 14px;
+  }
+}
+@media(max-width: 590px) {
+  .movies__grid {
+    grid-template-columns: repeat(1, 500px);
+  }
+}
+@media(max-width: 540px) {
+  .movies__grid {
+    grid-template-columns: repeat(1, 450px);
+  }
+}
+@media(max-width: 470px) {
+  .movies__grid {
+    grid-template-columns: repeat(1, 400px);
+
+  }
+}
+@media(max-width: 420px) {
+  .movies__grid {
+    grid-template-columns: repeat(1, 369px);
+  }
+}
+@media(max-width: 376px) {
+  .movies__grid {
+    grid-template-columns: repeat(1, 326px);
+  }
+}
+
+@media(max-width: 340px) {
+  .movies {
+    padding: 40px 10px 80px;
+  }
+
+  .movies__grid {
+    grid-template-columns: repeat(1, 300px);
+    grid-column-gap: 0;
+    grid-row-gap: 14px;
+  }
+
+}
