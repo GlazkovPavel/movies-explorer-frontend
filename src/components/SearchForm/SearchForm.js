@@ -32,7 +32,6 @@ export function SearchForm(props) {
             placeholder="Фильм"
             value={search || ''}
             onChange={handleSearchChange}
-            required
           />
         </fieldset>
         <button type="submit" className="search__form-button" />

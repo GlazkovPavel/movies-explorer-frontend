@@ -1,6 +1,7 @@
 import React from "react";
 import "./MoviesCardList.css";
 import {MoviesCard} from "../MoviesCard/MoviesCard";
+import Preloader from "../Preloader/Preloader";
 
 export function MoviesCardList(props){
 
@@ -50,6 +51,7 @@ export function MoviesCardList(props){
 
   return(
     <section className="movies">
+      {props.isLoading && <Preloader />}
       {props.notFoundMovies && <span>Ничего не найдено</span>}
 
       <ul className="movies__grid">

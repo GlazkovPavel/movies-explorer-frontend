@@ -27,6 +27,8 @@ export function Movies(props) {
         onMovieSave={props.onMovieSave}
         onDeleteMovie={props.onDeleteMovie}
         notFoundMovies={props.notFoundMovies}
+        isLoading={props.isLoading}
+
 
       />
       <Footer />

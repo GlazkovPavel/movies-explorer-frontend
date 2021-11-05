@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Switch, useLocation} from 'react-router-dom';
+import {Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import './App.css';
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
@@ -18,29 +18,38 @@ function App() {
   const [savedMovies, setSavedMovies] = React.useState([]);
   const [notFoundMovies, setNotFoundMovies] = React.useState(false);
   const [movies, setMovies] = React.useState([]);
+  const [isLoading, setIsLoading] = React.useState(false);
 
 
   const location = useLocation();
+  const history = useHistory();
 
   const isLoggedIn = true
 
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgzZTA2YmU4Nzc3MGE5NjRiMjEyZTAiLCJpYXQiOjE2MzYwMzI2MzIsImV4cCI6MTYzNjYzNzQzMn0.OS-cZayElckT6exOSsHvJYFD1J7lppYBBX1FKXTFA90'
 
   const searchMovies = (word) => {
+    setIsLoading(true);
+    setMovies([]);
+    setNotFoundMovies(false);
 
-      if(allMovies.length === 0) {
+      if(allMovies.length === 0 || word.length === 0) {
         getMovies()
           .then((movies) => {
               setAllMovies(movies)
               const searchResult = handleSearchMovies(movies, word)
               if(searchResult.length === 0) {
                 setNotFoundMovies(true);
-                setAllMovies([]);
+                setMovies([]);
               } else {
                 localStorage.setItem('movies', JSON.stringify(movies))
                 setMovies(JSON.parse(localStorage.getItem('movies')));
+                setNotFoundMovies(false);
               }})
           .catch(err => console.log(err, 'Обработка ошибок'))
+          .finally(() => {
+            setIsLoading(false);
+          })
       } else {
         const searchResult = handleSearchMovies(allMovies, word)
         if(searchResult.length === 0) {
@@ -49,6 +58,8 @@ function App() {
         } else if(searchResult.length !== 0) {
           localStorage.setItem('movies', JSON.stringify(searchResult));
           setMovies(JSON.parse(localStorage.getItem('movies')));
+          setIsLoading(false);
+          setNotFoundMovies(false);
         }
       }
   }
@@ -72,6 +83,9 @@ function App() {
         const newSavedMovies = savedMovies.filter((deletedMovie) => {return deletedMovie._id !== movieId})
         setSavedMovies(newSavedMovies);
         localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
+        const movies = JSON.parse(localStorage.getItem('movies'))
+
+        setMovies(movies)
       })
       .catch((err) => {
         console.log(`Ошибка ${err}, попробуйте еще раз`);
@@ -102,17 +116,19 @@ function App() {
   React.useEffect(() => {
 
     api.getSavedMovies(token)
-      .then((res) => {
-        setSavedMovies(res);
+      .then((movies) => {
+        setSavedMovies(movies);
       })
   }, [location]);
 
 
-  React.useEffect(() => {
-    const movies = JSON.parse(localStorage.getItem('movies'))
+    React.useEffect(() => {
+      const movies = JSON.parse(localStorage.getItem('movies'))
 
       setMovies(movies)
-  }, []);
+    }, [] );
+
+
 
 
   return (
@@ -130,6 +146,7 @@ function App() {
           onDeleteMovie={handleDeleteMovie}
           onMovieSave={handleSaveMovie}
           notFoundMovies={notFoundMovies}
+          isLoading={isLoading}
         />
         <ProtectedRoute
           exact path="/saved-movies"

@@ -7,6 +7,8 @@ export function MoviesCard(props) {
   const [isMoviesSaved, setIsMoviesSaved] = React.useState(false);
   const [isLiked, setIsLiked] = React.useState(false);
 
+  const location = useLocation();
+
   const movie = {
     country : props.movie.country || 'Не найдено',
     director: props.movie.director || 'Не найдено',
@@ -24,9 +26,7 @@ export function MoviesCard(props) {
   const editedDuration = `${Math.trunc(movie.duration/60)}ч${movie.duration % 60}м`;
   const image = `https://api.nomoreparties.co${props.movie.image?.url}`;
   const savedMovies = JSON.parse(localStorage.getItem('savedMovies'));
-  const currentMovie = savedMovies.find((movie) => movie.nameRU === props.movie.nameRU);
-
-  const location = useLocation();
+  const currentMovie = savedMovies?.find((movie) => movie.nameRU === props.movie.nameRU);
 
   function handleLikeButtonCLick() {
     props.onMovieSave(movie);
@@ -35,7 +35,6 @@ export function MoviesCard(props) {
 
   function handleDisLike() {
     setIsLiked(false);
-    console.log(currentMovie)
     props.onDeleteMovie(currentMovie._id);
   }
 
@@ -49,7 +48,7 @@ export function MoviesCard(props) {
       setIsLiked(true)
     }
 
-  }, [currentMovie, location])
+  }, [location])
 
   function onMouseOver(){
     setIsMoviesSaved(true)
@@ -57,8 +56,6 @@ export function MoviesCard(props) {
   function onMouseOut(){
     setIsMoviesSaved(false)
   }
-
-
 
   return(
     <li className="movies__item" >
@@ -70,7 +67,7 @@ export function MoviesCard(props) {
           <img className="movies__photo" alt={props.movie.nameRU} src={props.saved ? props.movie.image : image}/>
         </a>
       </div>
-      <div className="movies__item-description" onMouseOver={onMouseOver} onMouseOut={onMouseOut}>
+      <div className="movies__item-description" onMouseEnter={onMouseOver} onMouseLeave={onMouseOut}>
         <p className="movies__item-title">{props.movie.nameRU}</p>
         {props.saved ?
           <button
