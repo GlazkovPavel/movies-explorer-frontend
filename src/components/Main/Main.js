@@ -12,7 +12,7 @@ import {Header} from "../Header/Header";
 export function Main(){
 
   const mainState = true
-  const loggedIn = false
+  const loggedIn = localStorage.getItem('loggedIn');
 
 
   return(

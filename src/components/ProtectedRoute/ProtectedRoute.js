@@ -1,7 +1,8 @@
 import React from 'react';
 import { Route, Redirect } from "react-router-dom";
 
-export const ProtectedRoute = ({ loggedIn, component: Component ,...restProps}) => {
+export const ProtectedRoute = ({ component: Component ,...restProps}) => {
+  const loggedIn = localStorage.getItem('loggedIn');
 
   if(!loggedIn){
     return <Redirect to="/signin" />

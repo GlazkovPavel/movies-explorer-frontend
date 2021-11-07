@@ -9,7 +9,7 @@ export function SavedMovies(props){
 
   const mainState = false
   const saved = true
-  const loggedIn = true
+  const loggedIn = localStorage.getItem('loggedIn');
 
   return(
     <>
