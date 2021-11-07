@@ -3,6 +3,7 @@ import './Register.css';
 import header__logo from "../../images/header__logo.svg";
 import { Link } from "react-router-dom";
 import {useFormWithValidation} from "../../utils/formValidator";
+import Preloader from "../Preloader/Preloader";
 
 export function Register(props){
 
@@ -14,12 +15,14 @@ export function Register(props){
     props.onRegister(values.name, values.password, values.email);
   }
   return(
+
     <section className='register'>
-      <div className='auth__container'>
-        <div className="auth__logo-container">
-          <img src={header__logo} className="auth__logo" alt="Лого"/>
-        </div>
-        <h2 className="auth__title">Добро пожаловать!</h2>
+      {props.isLoading ? <Preloader/> :
+        <div className='auth__container'>
+          <div className="auth__logo-container">
+            <img src={header__logo} className="auth__logo" alt="Лого"/>
+          </div>
+          <h2 className="auth__title">Добро пожаловать!</h2>
           <form className='auth__form' onSubmit={handleRegisterSubmit}>
             <fieldset className='auth__fields'>
               <p className='auth__input-name'>Имя</p>
@@ -48,6 +51,7 @@ export function Register(props){
                 name='password'
                 value={values.password || ''}
                 onChange={handleChange}
+                minLength="8"
                 required/>
               <span className='auth__error'>{errors.password}</span>
             </fieldset>
@@ -55,9 +59,11 @@ export function Register(props){
             <button className={`auth__button ${isValid ? '': 'auth__button_disabled'}`}
                     disabled={!isValid} type='submit'>Зарегистрироваться</button>
           </form>
-        <h3 className='auth__transition'>Уже зарегистрированы?
-        <Link className='auth__link' to="/signin">Войти</Link></h3>
-      </div>
+          <h3 className='auth__transition'>Уже зарегистрированы?
+            <Link className='auth__link' to="/signin">Войти</Link></h3>
+        </div>
+      }
+
     </section>
   )
 }

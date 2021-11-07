@@ -20,11 +20,11 @@ function App() {
   const [movies, setMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
   const [registerErrorMessage, setRegisterErrorMessage] = React.useState('');
-
+  const [loginErrorMessage, setLoginErrorMessage] = React.useState('');
 
 
   const location = useLocation();
-  //const history = useHistory();
+  const history = useHistory();
 
   const isLoggedIn = true
 
@@ -49,6 +49,33 @@ function App() {
           setRegisterErrorMessage(`Что-то пошло не так...Ошибка ${res.status}`);
 
         }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
+  }
+
+  //функция входа пользователя
+  function handleLogin(password, email) {
+    setIsLoading(true);
+
+    api.enter(password, email)
+      .then((data) => {
+        if(data.token) {
+          localStorage.setItem('loggedIn', 'true');
+          console.log(token)
+          setLoginErrorMessage('');
+          history.push('/movies');
+        }
+      })
+      .catch((data) => {
+       if(data.error === 'Bad Request') {
+          setLoginErrorMessage('Введены невалидные данные');
+        } else if(data.message) {
+          setLoginErrorMessage(data.message);
+        }
+        setLoginErrorMessage('Что-то пошло не так...');
+
       })
       .finally(() => {
         setIsLoading(false);
@@ -199,11 +226,14 @@ function App() {
             onRegister={handleRegister}
             errorMessage={registerErrorMessage}
             isLoading={isLoading}
-
           />
         </Route>
         <Route exact path='/signin'>
-          <Login />
+          <Login
+            onLogin={handleLogin}
+            errorMessage={loginErrorMessage}
+            isLoading={isLoading}
+          />
         </Route>
         <Route path="*">
           <NotFound />
