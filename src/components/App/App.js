@@ -19,6 +19,8 @@ function App() {
   const [notFoundMovies, setNotFoundMovies] = React.useState(false);
   const [movies, setMovies] = React.useState([]);
   const [isLoading, setIsLoading] = React.useState(false);
+  const [registerErrorMessage, setRegisterErrorMessage] = React.useState('');
+
 
 
   const location = useLocation();
@@ -28,6 +30,32 @@ function App() {
 
   const token = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgzZTA2YmU4Nzc3MGE5NjRiMjEyZTAiLCJpYXQiOjE2MzYwMzI2MzIsImV4cCI6MTYzNjYzNzQzMn0.OS-cZayElckT6exOSsHvJYFD1J7lppYBBX1FKXTFA90'
 
+  //регистрация пользователя
+  function handleRegister(name, password, email) {
+    setIsLoading(true);
+    api.register(name, password, email)
+      .then((res) => {
+        if(res.user) {
+          setRegisterErrorMessage('')
+          console.log(password, email);
+        }
+      })
+      .catch((res) => {
+       if(res.statusText === 'Bad Request') {
+          setRegisterErrorMessage('Введены невалидные данные');
+        } else if(res.status === 409) {
+          setRegisterErrorMessage('Такой E-mail уже существует');
+        } else {
+          setRegisterErrorMessage(`Что-то пошло не так...Ошибка ${res.status}`);
+
+        }
+      })
+      .finally(() => {
+        setIsLoading(false);
+      })
+  }
+
+  //поиск фильмов
   const searchMovies = (word, isChecked) => {
     setIsLoading(true);
     setMovies([]);
@@ -167,7 +195,12 @@ function App() {
           component={Profile}
         />
         <Route exact path='/signup'>
-          <Register />
+          <Register
+            onRegister={handleRegister}
+            errorMessage={registerErrorMessage}
+            isLoading={isLoading}
+
+          />
         </Route>
         <Route exact path='/signin'>
           <Login />
