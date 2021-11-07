@@ -65,7 +65,6 @@ class MainApi {
       })
     })
       .then(this._getResponse)
-      .then(data => data)
   }
   getSavedMovies(token) {
     return fetch(`${this._url}/movies`, {

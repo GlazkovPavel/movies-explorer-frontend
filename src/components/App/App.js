@@ -24,6 +24,9 @@ function App() {
   const [loginErrorMessage, setLoginErrorMessage] = React.useState('');
   const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState('');
+  const [profileMessage, setProfileMessage] = React.useState('');
+  const [isSuccess, setIsSuccess] = React.useState(true);
+  //const [token, setToken] = React.useState('');
 
 
   const location = useLocation();
@@ -60,10 +63,14 @@ function App() {
       .then((data) => {
         if(data.token) {
           localStorage.setItem('loggedIn', 'true');
+          localStorage.setItem('jwt', data.token)
           setLoggedIn(true);
           setLoginErrorMessage('');
-          localStorage.setItem('jwt', data.token)
-          console.log(localStorage.getItem('jwt'))
+
+          api.getUserData(data.token)
+            .then((userData) => {
+              setCurrentUser(userData)
+            })
           history.push('/movies');
         }
       })
@@ -78,6 +85,30 @@ function App() {
       })
       .finally(() => {
         setIsLoading(false);
+      })
+  }
+
+  //редактирование пользователя
+  function handleUserInfo(name, email) {
+    const token = localStorage.getItem('jwt')
+
+    api.editUserData(token, name, email)
+      .then((newUser) => {
+        if(newUser) {
+          setCurrentUser(newUser.user);
+          setProfileMessage('Профиль успешно обновлен!');
+          setIsSuccess(true);
+        }
+      })
+      .catch((res) => {
+        setIsSuccess(false);
+        if(res.statusText === 'Bad Request') {
+          setProfileMessage('Введены невалидные данные');
+        } else if(res.status === 409) {
+          setProfileMessage('Такой E-mail уже существует');
+        } else {
+          setProfileMessage(`При обновлении профиля произошла, ошибка ${res.status}`);
+        }
       })
   }
 
@@ -102,7 +133,9 @@ function App() {
                 setNotFoundMovies(false);
                 setIsLoading(false);
               }})
-          .catch(err => console.log(err, 'Обработка ошибок'))
+          .catch((err) => {
+            console.log(`Ошибка ${err}, попробуйте еще раз`)
+          })
           .finally(() => {
             setIsLoading(false);
           })
@@ -178,31 +211,34 @@ function App() {
 
   React.useEffect(() => {
     const token = localStorage.getItem('jwt')
+    setProfileMessage('');
+    setIsSuccess(true);
 
     api.getSavedMovies(token)
       .then((movies) => {
         setSavedMovies(movies);
       })
-  }, [location]);
+  }, [history, location]);
 
 
     React.useEffect(() => {
       const movies = JSON.parse(localStorage.getItem('movies'))
-      console.log(movies)
       setMovies(movies)
       const token = localStorage.getItem('jwt')
       api.getUserData(token)
         .then((user) => {
           setCurrentUser(user)
         })
-    }, [loggedIn] );
+    }, [history, loggedIn] );
 
+    //выход из аккаунта
   function handleOnSignOut() {
-    localStorage.removeItem('token');
+    localStorage.removeItem('jwt');
     localStorage.removeItem('loggedIn');
     setAllMovies([]);
     setMovies([]);
-    setLoggedIn(false)
+    setLoggedIn(false);
+    setCurrentUser('');
     history.push('/');
   }
 
@@ -235,6 +271,10 @@ function App() {
             exact path="/profile"
             component={Profile}
             onSignOut={handleOnSignOut}
+            isLoading={isLoading}
+            onUserInfo={handleUserInfo}
+            profileMessage={profileMessage}
+            isSuccess={isSuccess}
           />
           <Route exact path='/signup'>
             <Register

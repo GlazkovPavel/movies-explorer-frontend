@@ -44,7 +44,6 @@
   color: black;
 }
 .profile__form-input-name {
-  font-family: Inter;
   font-style: normal;
   font-weight: 500;
   font-size: 11px;
@@ -112,6 +111,23 @@ hr{
 .profile__button_type_signout:hover {
   cursor: pointer;
   opacity: 0.7;
+}
+.profile__message {
+  font-style: normal;
+  font-weight: normal;
+  font-size: 11px;
+  line-height: 13px;
+  min-height: 13px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.profile__message_type_error {
+  color: #EE3465;
+}
+
+.profile__message_type_success {
+  color: #2BE080;
 }
 @media(max-width: 1179px) {
   .profile {
