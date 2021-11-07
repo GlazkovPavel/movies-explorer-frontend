@@ -47,7 +47,6 @@ function App() {
           setRegisterErrorMessage('Такой E-mail уже существует');
         } else {
           setRegisterErrorMessage(`Что-то пошло не так...Ошибка ${res.status}`);
-
         }
       })
       .finally(() => {
@@ -68,14 +67,14 @@ function App() {
           history.push('/movies');
         }
       })
-      .catch((data) => {
-       if(data.error === 'Bad Request') {
-          setLoginErrorMessage('Введены невалидные данные');
-        } else if(data.message) {
-          setLoginErrorMessage(data.message);
+      .catch((res) => {
+        if(res.statusText === 'Bad Request') {
+          setRegisterErrorMessage('Введены невалидные данные');
+        } else if(res.status === 409) {
+          setRegisterErrorMessage('Такой E-mail уже существует');
+        } else {
+          setRegisterErrorMessage(`Что-то пошло не так...Ошибка ${res.status}`);
         }
-        setLoginErrorMessage('Что-то пошло не так...');
-
       })
       .finally(() => {
         setIsLoading(false);
