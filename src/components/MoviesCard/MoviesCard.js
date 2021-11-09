@@ -47,7 +47,7 @@ export function MoviesCard(props) {
     if(currentMovie) {
       setIsLiked(true)
     }
-
+// eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location])
 
   function onMouseOver(){

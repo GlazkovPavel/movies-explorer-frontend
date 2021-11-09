@@ -13,7 +13,6 @@ import { getMovies } from "../../utils/MoviesApi";
 import api from "../../utils/MainApi";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 
-
 function App() {
   const [allMovies, setAllMovies] = React.useState([]);
   const [savedMovies, setSavedMovies] = React.useState([]);
@@ -26,8 +25,6 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState('');
   const [profileMessage, setProfileMessage] = React.useState('');
   const [isSuccess, setIsSuccess] = React.useState(true);
-  //const [token, setToken] = React.useState('');
-
 
   const location = useLocation();
   const history = useHistory();
@@ -175,9 +172,6 @@ function App() {
         const newSavedMovies = savedMovies.filter((deletedMovie) => {return deletedMovie._id !== movieId})
         setSavedMovies(newSavedMovies);
         localStorage.setItem('savedMovies', JSON.stringify(newSavedMovies));
-        const movies = JSON.parse(localStorage.getItem('movies'))
-
-        setMovies(movies)
       })
       .catch((err) => {
         console.log(`Ошибка ${err}, попробуйте еще раз`);
@@ -208,39 +202,54 @@ function App() {
     setSavedMovies(searchSavedResult);
     setIsLoading(false);
   }
-
-  React.useEffect(() => {
-    const token = localStorage.getItem('jwt')
-    setProfileMessage('');
-    setIsSuccess(true);
-
-    api.getSavedMovies(token)
-      .then((movies) => {
-        setSavedMovies(movies);
-      })
-  }, [history, location]);
-
-
-    React.useEffect(() => {
-      const movies = JSON.parse(localStorage.getItem('movies'))
-      setMovies(movies)
-      const token = localStorage.getItem('jwt')
-      api.getUserData(token)
-        .then((user) => {
-          setCurrentUser(user)
-        })
-    }, [history, loggedIn] );
-
-    //выход из аккаунта
+  //выход из аккаунта
   function handleOnSignOut() {
     localStorage.removeItem('jwt');
     localStorage.removeItem('loggedIn');
+    localStorage.removeItem('movies');
+    localStorage.removeItem('savedMovies');
     setAllMovies([]);
     setMovies([]);
     setLoggedIn(false);
     setCurrentUser('');
     history.push('/');
   }
+
+  React.useEffect(() => {
+    const token = localStorage.getItem('jwt')
+    setProfileMessage('');
+    setIsSuccess(true);
+    if(token){
+      api.getSavedMovies(token)
+        .then((movies) => {
+          setSavedMovies(movies);
+        })
+    }
+
+  }, [location]);
+
+  React.useEffect(() => {
+
+      if(localStorage.getItem('jwt')) {
+        const token = localStorage.getItem('jwt');
+        const searchedMovies = JSON.parse(localStorage.getItem('movies'));
+
+        if(token) {
+          Promise.all([api.getUserData(token), api.getSavedMovies(token)])
+            .then(([userData, movies]) => {
+              setCurrentUser(userData);
+              localStorage.setItem('savedMovies', JSON.stringify(movies));
+              setSavedMovies(movies);
+              setMovies(searchedMovies);
+              localStorage.setItem('loggedIn', 'true');
+            })
+            .catch((err) => {
+                console.log(`Ошибка ${err}, попробуйте еще раз`);
+              }
+            )
+        }
+      }
+  }, [history, loggedIn])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
