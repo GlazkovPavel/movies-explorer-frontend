@@ -12,7 +12,7 @@ export function Promo() {
         <img alt="Мир Веба" className="promo__image" src={promo}/>
       </div>
       <div className="promo__button-container">
-        <button className="promo__button">Узнать больше</button>
+        <a href="#about-project-id" className="promo__button">Узнать больше</a>
       </div>
     </section>
   )
