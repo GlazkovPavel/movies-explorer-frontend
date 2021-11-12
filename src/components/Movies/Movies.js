@@ -19,7 +19,10 @@ export function Movies(props) {
       />
       <SearchForm
         onSearchMovies={props.onSearchMovies}
+        onShortMoviesCheck={props.onShortMoviesCheck}
+        isChecked={props.isShortMoviesChecked}
         saved={saved}
+        onSearch={props.onSearch}
       />
       <MoviesCardList
         saved={saved}

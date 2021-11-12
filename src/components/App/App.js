@@ -25,9 +25,23 @@ function App() {
   const [currentUser, setCurrentUser] = React.useState('');
   const [profileMessage, setProfileMessage] = React.useState('');
   const [isSuccess, setIsSuccess] = React.useState(true);
+  const [isShortMoviesChecked, setIsShortMoviesChecked] = React.useState(false);
+  const [searchWord, setSearchWord] = React.useState('');
+
 
   const location = useLocation();
   const history = useHistory();
+
+  function handleShortMoviesChecked(e) {
+    setIsShortMoviesChecked(e.target.checked);
+    searchSavedMovies(searchWord);
+    searchMovies(searchWord);
+  }
+
+  function handleSearch(searchWord) {
+    setSearchWord(searchWord);
+  }
+
 
   //регистрация пользователя
   function handleRegister(name, password, email) {
@@ -110,16 +124,16 @@ function App() {
   }
 
   //поиск фильмов
-  const searchMovies = (word, isChecked) => {
+  const searchMovies = (word) => {
     setIsLoading(true);
     setMovies([]);
     setNotFoundMovies(false);
 
-      if(allMovies.length === 0 || word.length === 0) {
+      if(allMovies.length === 0 || word?.length === 0) {
         getMovies()
           .then((movies) => {
               setAllMovies(movies)
-              const searchResult = handleSearchMovies(movies, word, isChecked)
+              const searchResult = handleSearchMovies(movies, word)
               if(searchResult.length === 0) {
                 setNotFoundMovies(true);
                 setMovies([]);
@@ -135,13 +149,15 @@ function App() {
           })
           .finally(() => {
             setIsLoading(false);
+            //setIsShortMoviesChecked(false);
           })
       } else {
-        const searchResult = handleSearchMovies(allMovies, word, isChecked)
+        const searchResult = handleSearchMovies(allMovies, word)
         if(searchResult.length === 0) {
           setNotFoundMovies(true);
           setMovies([]);
           setIsLoading(false);
+          //setIsShortMoviesChecked(false);
         } else if(searchResult.length !== 0) {
           localStorage.setItem('movies', JSON.stringify(searchResult));
           setMovies(JSON.parse(localStorage.getItem('movies')));
@@ -179,11 +195,11 @@ function App() {
   }
 
 //фильтр названия фильмов
-  const handleSearchMovies = (movies, word, isChecked) => {
+  const handleSearchMovies = (movies, word) => {
 
     const filterRegex = new RegExp(word, 'gi');
     return movies.filter((movie) => {
-      if (isChecked) {
+      if (isShortMoviesChecked) {
         return movie.duration <= 40 && filterRegex.test(movie.nameRU)
       } else {
         return filterRegex.test(movie.nameRU)
@@ -192,9 +208,9 @@ function App() {
   }
 
 //поиск по сохраненным фильтрам
-  function searchSavedMovies(word, isChecked) {
+  function searchSavedMovies(word) {
     const allSavedMovies = JSON.parse(localStorage.getItem('savedMovies'));
-    const searchSavedResult = handleSearchMovies(allSavedMovies, word, isChecked);
+    const searchSavedResult = handleSearchMovies(allSavedMovies, word);
     if (searchSavedResult.length === 0) {
       setNotFoundMovies(true)
       setIsLoading(false);
@@ -267,6 +283,9 @@ function App() {
             onMovieSave={handleSaveMovie}
             notFoundMovies={notFoundMovies}
             isLoading={isLoading}
+            onShortMoviesCheck={handleShortMoviesChecked}
+            isShortMoviesChecked={isShortMoviesChecked}
+            onSearch={handleSearch}
           />
           <ProtectedRoute
             exact path="/saved-movies"
@@ -275,6 +294,9 @@ function App() {
             onDeleteMovie={handleDeleteMovie}
             onSearchSavedMovies={searchSavedMovies}
             notFoundMovies={notFoundMovies}
+            onShortMoviesCheck={handleShortMoviesChecked}
+            isShortMoviesChecked={isShortMoviesChecked}
+            onSearch={handleSearch}
           />
           <ProtectedRoute
             exact path="/profile"

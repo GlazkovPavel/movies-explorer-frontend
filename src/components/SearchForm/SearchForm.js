@@ -6,25 +6,32 @@ import {FilterCheckbox} from "../FilterCheckbox/FilterCheckbox";
 export function SearchForm(props) {
 
   const [search, setSearch] = React.useState('')
-  const [isChecked, setIsShortMoviesChecked] = React.useState(false);
+  //const [isChecked, setIsShortMoviesChecked] = React.useState(false);
 
   function handleSearchChange(e){
     setSearch(e.target.value);
+    props.onSearch(search);
   }
+
+
 
   function handleSearchMovies(e) {
     e.preventDefault();
-    props.onSearchMovies(search, isChecked);
+    props.onSearchMovies(search);
   }
 
   function handleSearchSavedMovies(e) {
     e.preventDefault();
-    props.onSearchSavedMovies(search, isChecked);
+    props.onSearchSavedMovies(search);
   }
 
-  function handleShortMoviesCheck(e) {
-    setIsShortMoviesChecked(e.target.checked);
-  }
+  // function handleShortMoviesCheck(e) {
+  //   setIsShortMoviesChecked(e.target.checked);
+  //   // eslint-disable-next-line no-lone-blocks
+  //   {props.saved ? handleSearchSavedMovies(e) : handleSearchMovies(e)}
+  //   //handleSearchSavedMovies(e)
+  //
+  // }
 
   return(
     <section className="search">
@@ -41,7 +48,7 @@ export function SearchForm(props) {
         <button type="submit" className="search__form-button" />
         <span className="search__form-button_border" />
         <div className="search__toggle-box">
-          <FilterCheckbox onChange={handleShortMoviesCheck} isChecked={isChecked}/>
+          <FilterCheckbox onChange={props.onShortMoviesCheck} isChecked={props.isChecked}/>
           <h3 className="search__toggle-text">Короткометражки</h3>
         </div>
       </form>

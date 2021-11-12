@@ -11,7 +11,7 @@ export function Profile(props) {
   const currentUser = React.useContext(CurrentUserContext)
   const loggedIn = localStorage.getItem('loggedIn');
 
-  const {values, handleChange, errors, isValid, setValues} = useFormWithValidation();
+  const {values, handleChange, errors, isValid, setValues, setIsValid} = useFormWithValidation();
 
 
   function disabledButton(e) {
@@ -37,6 +37,13 @@ export function Profile(props) {
   React.useEffect(() => {
     setIsFormDisabled(props.isSuccess);
   },[props.isSuccess,  props.onUserInfo]);
+
+  React.useEffect(() => {
+    if(values.name === currentUser.name && values.email === currentUser.email){
+      setIsValid(false)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [values])
 
   return(
     <>
