@@ -10,7 +10,7 @@ export function SearchForm(props) {
 
   function handleSearchChange(e){
     setSearch(e.target.value);
-    props.onSearch(search);
+    //props.onSearch(search);
   }
 
 
