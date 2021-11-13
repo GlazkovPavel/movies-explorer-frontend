@@ -6,14 +6,15 @@ import {FilterCheckbox} from "../FilterCheckbox/FilterCheckbox";
 export function SearchForm(props) {
 
   const [search, setSearch] = React.useState('')
-  //const [isChecked, setIsShortMoviesChecked] = React.useState(false);
 
   function handleSearchChange(e){
     setSearch(e.target.value);
-    //props.onSearch(search);
+    props.onSearch(e.target.value);
+    handleValue(e);
   }
-
-
+  function handleValue(e){
+    props.onSearch(e.target.value);
+  }
 
   function handleSearchMovies(e) {
     e.preventDefault();
@@ -24,14 +25,6 @@ export function SearchForm(props) {
     e.preventDefault();
     props.onSearchSavedMovies(search);
   }
-
-  // function handleShortMoviesCheck(e) {
-  //   setIsShortMoviesChecked(e.target.checked);
-  //   // eslint-disable-next-line no-lone-blocks
-  //   {props.saved ? handleSearchSavedMovies(e) : handleSearchMovies(e)}
-  //   //handleSearchSavedMovies(e)
-  //
-  // }
 
   return(
     <section className="search">

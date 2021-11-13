@@ -26,17 +26,9 @@ function App() {
   const [profileMessage, setProfileMessage] = React.useState('');
   const [isSuccess, setIsSuccess] = React.useState(true);
   const [isShortMoviesChecked, setIsShortMoviesChecked] = React.useState(false);
-  //const [searchWord, setSearchWord] = React.useState('');
-
 
   const location = useLocation();
   const history = useHistory();
-
-
-
-  // function handleSearch(searchWord) {
-  //   setSearchWord(searchWord);
-  // }
 
 
   //регистрация пользователя
@@ -119,6 +111,10 @@ function App() {
       })
   }
 
+  function handleShortMoviesChecked(e) {
+    setIsShortMoviesChecked(e.target.checked);
+  }
+
   //поиск фильмов
   const searchMovies = (word) => {
     setIsLoading(true);
@@ -145,7 +141,6 @@ function App() {
           })
           .finally(() => {
             setIsLoading(false);
-            //setIsShortMoviesChecked(false);
           })
       } else {
         const searchResult = handleSearchMovies(allMovies, word)
@@ -208,51 +203,15 @@ function App() {
     const allSavedMovies = JSON.parse(localStorage.getItem('savedMovies'));
     const searchSavedResult = handleSearchMovies(allSavedMovies, word);
     if (searchSavedResult.length === 0) {
-      setNotFoundMovies(true)
+      setNotFoundMovies(true);
+      setSavedMovies([]);
       setIsLoading(false);
+    } else {
+      setSavedMovies(searchSavedResult);
+      setIsLoading(false);
+      setNotFoundMovies(false);
     }
-    setSavedMovies(searchSavedResult);
-    setIsLoading(false);
   }
-
-  const handleSearchCheck = (movies, ef) => {
-
-    //const filterRegex = new RegExp(word, 'gi');
-    return movies.filter((movie) => {
-      if (ef) {
-        return movie.duration <= 40
-      } else {
-        return movies
-      }
-    })
-  }
-
-  function handleShortMoviesChecked(e) {
-    // setIsShortMoviesChecked(e.target.checked);
-    // searchSavedMovies();
-    // searchMovies();
-    const ef = e.target.checked
-    if (ef){
-      const allMovies = JSON.parse(localStorage.getItem('movies'));
-      const searchSavedResult = handleSearchCheck(allMovies, ef);
-      setIsShortMoviesChecked(true);
-      if (searchSavedResult.length === 0) {
-        setNotFoundMovies(true)
-        setIsLoading(false);
-      } else {
-        setMovies(searchSavedResult)
-      }
-  } else {
-      const allMovies = JSON.parse(localStorage.getItem('movies'));
-      const searchSavedResult = handleSearchCheck(allMovies, ef);
-      setIsShortMoviesChecked(false);
-      if (searchSavedResult.length === 0) {
-        setNotFoundMovies(true)
-        setIsLoading(false);
-      } else {
-        setMovies(searchSavedResult)
-      }
-    }}
 
   //выход из аккаунта
   function handleOnSignOut() {
@@ -321,7 +280,6 @@ function App() {
             isLoading={isLoading}
             onShortMoviesCheck={handleShortMoviesChecked}
             isShortMoviesChecked={isShortMoviesChecked}
-            //onSearch={handleSearch}
           />
           <ProtectedRoute
             exact path="/saved-movies"
@@ -332,7 +290,7 @@ function App() {
             notFoundMovies={notFoundMovies}
             onShortMoviesCheck={handleShortMoviesChecked}
             isShortMoviesChecked={isShortMoviesChecked}
-            //onSearch={handleSearch}
+            isLoading={isLoading}
           />
           <ProtectedRoute
             exact path="/profile"
