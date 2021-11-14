@@ -1,5 +1,5 @@
 import React from "react";
-import {Route, Switch, useHistory, useLocation} from 'react-router-dom';
+import {Redirect, Route, Switch, useHistory, useLocation} from 'react-router-dom';
 import './App.css';
 import { Main } from "../Main/Main";
 import { Movies } from "../Movies/Movies";
@@ -21,7 +21,7 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [registerErrorMessage, setRegisterErrorMessage] = React.useState('');
   const [loginErrorMessage, setLoginErrorMessage] = React.useState('');
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  //const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState('');
   const [profileMessage, setProfileMessage] = React.useState('');
   const [isSuccess, setIsSuccess] = React.useState(true);
@@ -29,6 +29,8 @@ function App() {
 
   const location = useLocation();
   const history = useHistory();
+
+  const loggedIn = localStorage.getItem('loggedIn');
 
 
   //регистрация пользователя
@@ -63,7 +65,6 @@ function App() {
         if(data.token) {
           localStorage.setItem('loggedIn', 'true');
           localStorage.setItem('jwt', data.token)
-          setLoggedIn(true);
           setLoginErrorMessage('');
 
           api.getUserData(data.token)
@@ -125,7 +126,7 @@ function App() {
         getMovies()
           .then((movies) => {
               setAllMovies(movies)
-              const searchResult = handleSearchMovies(movies, word)
+              const searchResult = handleSearchMovies(movies)
               if(searchResult.length === 0) {
                 setNotFoundMovies(true);
                 setMovies([]);
@@ -221,7 +222,7 @@ function App() {
     localStorage.removeItem('savedMovies');
     setAllMovies([]);
     setMovies([]);
-    setLoggedIn(false);
+    setNotFoundMovies(false);
     setCurrentUser('');
     history.push('/');
   }
@@ -302,18 +303,20 @@ function App() {
             isSuccess={isSuccess}
           />
           <Route exact path='/signup'>
-            <Register
-              onRegister={handleRegister}
-              errorMessage={registerErrorMessage}
-              isLoading={isLoading}
-            />
+            {loggedIn ? <Redirect to='/'/> :
+              <Register
+                onRegister={handleRegister}
+                errorMessage={registerErrorMessage}
+                isLoading={isLoading}
+              />}
           </Route>
           <Route exact path='/signin'>
-            <Login
-              onLogin={handleLogin}
-              errorMessage={loginErrorMessage}
-              isLoading={isLoading}
-            />
+            {loggedIn ? <Redirect to='/'/> :
+              <Login
+                onLogin={handleLogin}
+                errorMessage={loginErrorMessage}
+                isLoading={isLoading}
+              />}
           </Route>
           <Route path="*">
             <NotFound />

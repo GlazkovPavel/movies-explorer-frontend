@@ -67,7 +67,6 @@ React.useEffect(() => {
       }
     }}
 
-
   return(
     <>
       <Header

@@ -5,7 +5,7 @@ export const ProtectedRoute = ({ component: Component ,...restProps}) => {
   const loggedIn = localStorage.getItem('loggedIn');
 
   if(!loggedIn){
-    return <Redirect to="/signin" />
+    return <Redirect to="/" />
   }
   return <Route>
     <Component {...restProps} />
