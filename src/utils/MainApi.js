@@ -1,6 +1,6 @@
 class MainApi {
   constructor() {
-    this._url = 'https://api.super-movies-explorer.nomoredomains.monster'
+    this._url = 'http://localhost:3002'
   }
   _getResponse(res) {
     if (res.ok) {
