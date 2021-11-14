@@ -2,7 +2,6 @@
   "name": "movies-explorer-frontend",
   "version": "0.1.0",
   "private": true,
-  "homepage" : "https://super-movies-explorer.nomoredomains.monster",
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
@@ -18,7 +17,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "deploy": "npm run build && scp -r ./build/* glazkovpavel@130.193.52.211:/home/glazkovpavel/diplom-frontend"
+    "deploy": "npm run build && scp -r ./build/* glazkovpavel@51.250.16.72:/home/glazkovpavel/diplom-frontend"
   },
   "eslintConfig": {
     "extends": [
