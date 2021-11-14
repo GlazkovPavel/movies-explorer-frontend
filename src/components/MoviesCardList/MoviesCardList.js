@@ -2,6 +2,7 @@ import React from "react";
 import "./MoviesCardList.css";
 import {MoviesCard} from "../MoviesCard/MoviesCard";
 import Preloader from "../Preloader/Preloader";
+import {ADDING_CARDS, NUMBER_OF_CARD, WINDOW_WIDTH} from "../../utils/constants";
 
 export function MoviesCardList(props){
 
@@ -11,35 +12,35 @@ export function MoviesCardList(props){
 
   const [initialCardsCurrent, setInitialCardsCurrent] = React.useState(() => {
     const windowSize = window.innerWidth;
-    if(windowSize < 641) {
-      return 5
-    } else if(windowSize <= 970) {
-      return 8
-    } else if(windowSize < 1279) {
-      return 12 }
-    else if(windowSize > 1279) {
-      return 12
+    if(windowSize < WINDOW_WIDTH.SMALL) {
+      return NUMBER_OF_CARD.MIN
+    } else if(windowSize <= WINDOW_WIDTH.MEDIUM) {
+      return NUMBER_OF_CARD.MEAN
+    } else if(windowSize < WINDOW_WIDTH.LARGE) {
+      return NUMBER_OF_CARD.MAX }
+    else if(windowSize > WINDOW_WIDTH.LARGE) {
+      return NUMBER_OF_CARD.MAX
     }
   } );
   const [moreCards] = React.useState(() => {
     const windowSize = window.innerWidth;
-     if(windowSize <= 970) {
-      return 2
-    } else if(windowSize >= 971) {
-      return 3
+     if(windowSize <= WINDOW_WIDTH.MEDIUM) {
+      return ADDING_CARDS.MIN
+    } else if(windowSize >= WINDOW_WIDTH.MEDIUM + 1) {
+      return ADDING_CARDS.MAX
     }
   });
 
   function handleScreenWidth () {
     const windowSize = window.innerWidth;
-    if(windowSize < 641) {
-      setInitialCardsCurrent(5)
-    } else if(windowSize <= 970) {
-      setInitialCardsCurrent(8)
-    } else if(windowSize < 1279) {
-      setInitialCardsCurrent(12)
-    } else if(windowSize > 1279) {
-      setInitialCardsCurrent(12)
+    if(windowSize < WINDOW_WIDTH.SMALL) {
+      setInitialCardsCurrent(NUMBER_OF_CARD.MIN)
+    } else if(windowSize <= WINDOW_WIDTH.MEDIUM) {
+      setInitialCardsCurrent(NUMBER_OF_CARD.MEAN)
+    } else if(windowSize < WINDOW_WIDTH.LARGE) {
+      setInitialCardsCurrent(NUMBER_OF_CARD.MAX)
+    } else if(windowSize > WINDOW_WIDTH.LARGE) {
+      setInitialCardsCurrent(NUMBER_OF_CARD.MAX)
     }
   }
 

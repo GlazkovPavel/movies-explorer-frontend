@@ -12,6 +12,7 @@ import {ProtectedRoute} from "../ProtectedRoute/ProtectedRoute";
 import { getMovies } from "../../utils/MoviesApi";
 import api from "../../utils/MainApi";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
+import {SHORT_MOVIE_DURATION} from "../../utils/constants";
 
 function App() {
   const [allMovies, setAllMovies] = React.useState([]);
@@ -21,7 +22,6 @@ function App() {
   const [isLoading, setIsLoading] = React.useState(false);
   const [registerErrorMessage, setRegisterErrorMessage] = React.useState('');
   const [loginErrorMessage, setLoginErrorMessage] = React.useState('');
-  //const [loggedIn, setLoggedIn] = React.useState(false);
   const [currentUser, setCurrentUser] = React.useState('');
   const [profileMessage, setProfileMessage] = React.useState('');
   const [isSuccess, setIsSuccess] = React.useState(true);
@@ -32,9 +32,9 @@ function App() {
 
   const loggedIn = localStorage.getItem('loggedIn');
 
-
   //регистрация пользователя
   function handleRegister(name, password, email) {
+    setRegisterErrorMessage('');
     setIsLoading(true);
     api.register(name, password, email)
       .then((res) => {
@@ -58,6 +58,7 @@ function App() {
 
   //функция входа пользователя
   function handleLogin(password, email) {
+    setRegisterErrorMessage('');
     setIsLoading(true);
 
     api.enter(password, email)
@@ -70,6 +71,9 @@ function App() {
           api.getUserData(data.token)
             .then((userData) => {
               setCurrentUser(userData)
+            })
+            .catch((res) => {
+              setRegisterErrorMessage(`Что-то пошло не так...Ошибка ${res.status}`);
             })
           history.push('/movies');
         }
@@ -149,7 +153,6 @@ function App() {
           setNotFoundMovies(true);
           setMovies([]);
           setIsLoading(false);
-          //setIsShortMoviesChecked(false);
         } else if(searchResult.length !== 0) {
           localStorage.setItem('movies', JSON.stringify(searchResult));
           setMovies(JSON.parse(localStorage.getItem('movies')));
@@ -192,7 +195,7 @@ function App() {
     const filterRegex = new RegExp(word, 'gi');
     return movies.filter((movie) => {
       if (isShortMoviesChecked) {
-        return movie.duration <= 40 && filterRegex.test(movie.nameRU)
+        return movie.duration <= SHORT_MOVIE_DURATION && filterRegex.test(movie.nameRU)
       } else {
         return filterRegex.test(movie.nameRU)
       }
@@ -214,6 +217,12 @@ function App() {
     }
   }
 
+  //функция очистки сообщений об ошибки
+  function clearErrorMessages() {
+    setRegisterErrorMessage('');
+    setLoginErrorMessage('');
+  }
+
   //выход из аккаунта
   function handleOnSignOut() {
     localStorage.removeItem('jwt');
@@ -222,46 +231,49 @@ function App() {
     localStorage.removeItem('savedMovies');
     setAllMovies([]);
     setMovies([]);
+    setSavedMovies([]);
     setNotFoundMovies(false);
     setCurrentUser('');
     history.push('/');
   }
 
   React.useEffect(() => {
-    const token = localStorage.getItem('jwt')
-    setProfileMessage('');
-    setIsSuccess(true);
-    if(token){
-      api.getSavedMovies(token)
-        .then((movies) => {
-          setSavedMovies(movies);
-        })
+    if(location.pathname === '/saved-movies') {
+      const token = localStorage.getItem('jwt')
+      setProfileMessage('');
+      setIsSuccess(true);
+        api.getSavedMovies(token)
+          .then((movies) => {
+            setSavedMovies(movies);
+          })
+          .catch((err) => {
+            console.log(`Ошибка ${err}, попробуйте еще раз`);
+          })
     }
 
   }, [location]);
 
   React.useEffect(() => {
+    if(location.pathname === '/movies') {
+      const token = localStorage.getItem('jwt');
+      const searchedMovies = JSON.parse(localStorage.getItem('movies'));
 
-      if(localStorage.getItem('jwt')) {
-        const token = localStorage.getItem('jwt');
-        const searchedMovies = JSON.parse(localStorage.getItem('movies'));
+      Promise.all([api.getUserData(token), api.getSavedMovies(token)])
+        .then(([userData, movies]) => {
+          setCurrentUser(userData);
+          localStorage.setItem('savedMovies', JSON.stringify(movies));
+          setSavedMovies(movies);
+          setMovies(searchedMovies);
+          localStorage.setItem('loggedIn', 'true');
+        })
+        .catch((err) => {
+            console.log(`Ошибка ${err}, попробуйте еще раз`);
+          }
+        )
+    }
 
-        if(token) {
-          Promise.all([api.getUserData(token), api.getSavedMovies(token)])
-            .then(([userData, movies]) => {
-              setCurrentUser(userData);
-              localStorage.setItem('savedMovies', JSON.stringify(movies));
-              setSavedMovies(movies);
-              setMovies(searchedMovies);
-              localStorage.setItem('loggedIn', 'true');
-            })
-            .catch((err) => {
-                console.log(`Ошибка ${err}, попробуйте еще раз`);
-              }
-            )
-        }
-      }
-  }, [history, loggedIn])
+
+  }, [history, location.pathname, loggedIn])
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -308,6 +320,7 @@ function App() {
                 onRegister={handleRegister}
                 errorMessage={registerErrorMessage}
                 isLoading={isLoading}
+                onClear={clearErrorMessages}
               />}
           </Route>
           <Route exact path='/signin'>
@@ -316,6 +329,7 @@ function App() {
                 onLogin={handleLogin}
                 errorMessage={loginErrorMessage}
                 isLoading={isLoading}
+                onClear={clearErrorMessages}
               />}
           </Route>
           <Route path="*">

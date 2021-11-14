@@ -13,6 +13,7 @@ export function Register(props){
     e.preventDefault();
 
     props.onRegister(values.name, values.password, values.email);
+
   }
   return(
 
@@ -60,7 +61,7 @@ export function Register(props){
                     disabled={!isValid} type='submit'>Зарегистрироваться</button>
           </form>
           <h3 className='auth__transition'>Уже зарегистрированы?
-            <Link className='auth__link' to="/signin">Войти</Link></h3>
+            <Link className='auth__link' to="/signin" onClick={props.onClear}>Войти</Link></h3>
         </div>
       }
 

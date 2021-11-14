@@ -4,6 +4,7 @@ import {Header} from "../Header/Header";
 import {SearchForm} from "../SearchForm/SearchForm";
 import {MoviesCardList} from "../MoviesCardList/MoviesCardList";
 import {Footer} from "../Footer/Footer";
+import {SHORT_MOVIE_DURATION} from "../../utils/constants";
 
 export function SavedMovies(props){
 
@@ -32,7 +33,7 @@ React.useEffect(() => {
     const filterRegex = new RegExp(searchWord, 'gi');
     return movies.filter((movie) => {
       if (ef) {
-        return movie.duration <= 40 && filterRegex.test(movie.nameRU)
+        return movie.duration <= SHORT_MOVIE_DURATION && filterRegex.test(movie.nameRU)
       } else {
         return filterRegex.test(movie.nameRU)
       }

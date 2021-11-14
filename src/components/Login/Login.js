@@ -45,11 +45,12 @@ export function Login(props) {
                 required/>
               <span className='auth__error'>{errors.password}</span>
             </fieldset>
+            <span className='auth__submit-error'>{props.errorMessage}</span>
             <button className={`auth__button ${isValid ? '': 'auth__button_disabled'}`}
                     disabled={!isValid} type='submit'>Войти</button>
           </form>
           <h3 className='auth__transition'>Ещё не зарегистрированы?
-            <Link className='auth__link' to="/signup">Регистрация</Link></h3>
+            <Link className='auth__link' to="/signup" onClick={props.onClear}>Регистрация</Link></h3>
         </div>
       }
 
