@@ -9,17 +9,16 @@ import {Footer} from "../Footer/Footer";
 import {Header} from "../Header/Header";
 
 
-export function Main(){
+export function Main(props){
 
   const mainState = true
-  const loggedIn = localStorage.getItem('loggedIn');
 
 
   return(
     <>
       <Header
       main={mainState}
-      loggedIn={loggedIn}
+      loggedIn={props.loggedIn}
       />
       <Promo />
       <AboutProject />

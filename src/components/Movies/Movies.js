@@ -16,7 +16,6 @@ export function Movies(props) {
 
   const mainState = false
   const saved = false
-  const loggedIn = localStorage.getItem('loggedIn');
 
 
   React.useEffect(() => {
@@ -73,7 +72,7 @@ export function Movies(props) {
     <>
       <Header
       main={mainState}
-      loggedIn={loggedIn}
+      loggedIn={props.loggedIn}
       />
       <SearchForm
         onSearchMovies={props.onSearchMovies}

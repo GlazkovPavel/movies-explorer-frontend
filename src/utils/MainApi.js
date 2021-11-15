@@ -31,13 +31,8 @@ class MainApi {
       body: JSON.stringify({password, email})
     })
       .then(this._getResponse)
-      .then((data) => {
-        if (data.token){
-          localStorage.setItem('token', data.token);
-        }
-        return data;
-      })
   }
+
   getUserData(token) {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',

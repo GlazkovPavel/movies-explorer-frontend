@@ -16,7 +16,6 @@ export function SavedMovies(props){
 
   const mainState = false
   const saved = true
-  const loggedIn = localStorage.getItem('loggedIn');
 
 React.useEffect(() => {
   setMovies(props.movies)
@@ -72,7 +71,7 @@ React.useEffect(() => {
     <>
       <Header
         main={mainState}
-        loggedIn={loggedIn}
+        loggedIn={props.loggedIn}
       />
       <SearchForm
         onSearchSavedMovies={props.onSearchSavedMovies}

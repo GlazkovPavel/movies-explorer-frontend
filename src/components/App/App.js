@@ -26,11 +26,11 @@ function App() {
   const [profileMessage, setProfileMessage] = React.useState('');
   const [isSuccess, setIsSuccess] = React.useState(true);
   const [isShortMoviesChecked, setIsShortMoviesChecked] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
 
   const location = useLocation();
   const history = useHistory();
-
-  const loggedIn = localStorage.getItem('loggedIn');
 
   //регистрация пользователя
   function handleRegister(name, password, email) {
@@ -64,7 +64,7 @@ function App() {
     api.enter(password, email)
       .then((data) => {
         if(data.token) {
-          localStorage.setItem('loggedIn', 'true');
+          setLoggedIn(true);
           localStorage.setItem('jwt', data.token)
           setLoginErrorMessage('');
 
@@ -130,16 +130,14 @@ function App() {
         getMovies()
           .then((movies) => {
               setAllMovies(movies)
-              const searchResult = handleSearchMovies(movies)
+              const searchResult = handleSearchMovies(movies, word)
               if(searchResult.length === 0) {
                 setNotFoundMovies(true);
                 setMovies([]);
-                setIsLoading(false);
               } else {
-                localStorage.setItem('movies', JSON.stringify(movies))
+                localStorage.setItem('movies', JSON.stringify(searchResult))
                 setMovies(JSON.parse(localStorage.getItem('movies')));
                 setNotFoundMovies(false);
-                setIsLoading(false);
               }})
           .catch((err) => {
             console.log(`Ошибка ${err}, попробуйте еще раз`)
@@ -226,9 +224,9 @@ function App() {
   //выход из аккаунта
   function handleOnSignOut() {
     localStorage.removeItem('jwt');
-    localStorage.removeItem('loggedIn');
     localStorage.removeItem('movies');
     localStorage.removeItem('savedMovies');
+    setLoggedIn(false);
     setAllMovies([]);
     setMovies([]);
     setSavedMovies([]);
@@ -264,7 +262,7 @@ function App() {
           localStorage.setItem('savedMovies', JSON.stringify(movies));
           setSavedMovies(movies);
           setMovies(searchedMovies);
-          localStorage.setItem('loggedIn', 'true');
+          setLoggedIn(true)
         })
         .catch((err) => {
             console.log(`Ошибка ${err}, попробуйте еще раз`);
@@ -280,12 +278,13 @@ function App() {
       <div className="page">
         <Switch>
           <Route exact path='/'>
-            <Main />
+            <Main loggedIn={loggedIn}/>
           </Route>
           <ProtectedRoute
             exact path="/movies"
             component={Movies}
             movies={movies}
+            loggedIn={loggedIn}
             onSearchMovies={searchMovies}
             onDeleteMovie={handleDeleteMovie}
             onMovieSave={handleSaveMovie}
@@ -304,6 +303,7 @@ function App() {
             onShortMoviesCheck={handleShortMoviesChecked}
             isShortMoviesChecked={isShortMoviesChecked}
             isLoading={isLoading}
+            loggedIn={loggedIn}
           />
           <ProtectedRoute
             exact path="/profile"
@@ -313,6 +313,7 @@ function App() {
             onUserInfo={handleUserInfo}
             profileMessage={profileMessage}
             isSuccess={isSuccess}
+            loggedIn={loggedIn}
           />
           <Route exact path='/signup'>
             {loggedIn ? <Redirect to='/'/> :

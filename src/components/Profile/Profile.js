@@ -9,7 +9,6 @@ export function Profile(props) {
   const [isFormDisabled, setIsFormDisabled] = React.useState(true);
 
   const currentUser = React.useContext(CurrentUserContext)
-  const loggedIn = localStorage.getItem('loggedIn');
 
   const {values, handleChange, errors, isValid, setValues, setIsValid} = useFormWithValidation();
 
@@ -47,7 +46,7 @@ export function Profile(props) {
 
   return(
     <>
-      <Header loggedIn={loggedIn}/>
+      <Header loggedIn={props.loggedIn}/>
       <section className="profile">
         <h2 className='profile__title'>Привет, {currentUser.name}!</h2>
         <form className="profile__form" onSubmit={handleSubmit}>
