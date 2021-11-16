@@ -6,7 +6,7 @@ class MainApi {
     if (res.ok) {
       return res.json();
     }
-    return Promise.reject(`Ошибка: ${res.status}`);
+    return Promise.reject(res);
   }
 
   register(name, password, email) {
@@ -31,13 +31,8 @@ class MainApi {
       body: JSON.stringify({password, email})
     })
       .then(this._getResponse)
-      .then((data) => {
-        if (data.token){
-          localStorage.setItem('token', data.token);
-        }
-        return data;
-      })
   }
+
   getUserData(token) {
     return fetch(`${this._url}/users/me`, {
       method: 'GET',
@@ -65,13 +60,11 @@ class MainApi {
       })
     })
       .then(this._getResponse)
-      .then(data => data)
   }
   getSavedMovies(token) {
     return fetch(`${this._url}/movies`, {
       method: 'GET',
       headers: {
-        'Accept': 'application/json',
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`,
       },

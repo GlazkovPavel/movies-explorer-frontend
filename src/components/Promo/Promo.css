@@ -32,17 +32,21 @@
   line-height: 16px;
   max-width: 310px;
   padding-top: 36px;
+  margin-bottom: 146px;
   opacity: .5;
 }
 
 .promo__button{
+  text-decoration: none;
+  color: black;
   width: 129px;
   height: 36px;
-  margin: 146px 0 75px 70px;
+  margin-left: 70px;
   font-style: normal;
   font-weight: 500;
   font-size: 12px;
   line-height: 16px;
+  padding: 10px 20px;
   border: 1px solid #000;
   border-radius: 3px;
   background-color: #DDDEE3;
